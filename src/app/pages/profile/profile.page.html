@@ -10,117 +10,144 @@
 </ion-header>
 
 <ion-content class="custom-content">
-  <form #f="ngForm" *ngIf="!pictureTaken && !videoRecorded">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item *ngIf="editing">
-            <ion-label position="floating">Nombre de usuario</ion-label>
-            <ion-input
-              type="text"
-              name="username"
-              [(ngModel)]="editUser.username"
-            ></ion-input>
-          </ion-item>
-          <p *ngIf="!editing" class="custom-paragraph">
-            <ion-icon name="person-outline"></ion-icon>{{ user?.username }}
-          </p>
-        </ion-col>
-      </ion-row>
+  <div class="content-wrapper">
+    <form #f="ngForm" *ngIf="!pictureTaken && !videoRecorded">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item *ngIf="editing">
+              <ion-label position="floating">Nombre de usuario</ion-label>
+              <ion-input
+                type="text"
+                name="username"
+                [(ngModel)]="editUser.username"
+              ></ion-input>
+            </ion-item>
+            <p *ngIf="!editing" class="custom-paragraph">
+              <ion-icon name="person-outline"></ion-icon>{{ user?.username }}
+            </p>
+          </ion-col>
+        </ion-row>
 
-      <ion-row>
-        <ion-col size="12">
-          <ion-item *ngIf="editing">
-            <ion-label position="floating">Foto de perfil</ion-label>
-            <br />
-            <ion-input
-              type="file"
-              name="image"
-              (change)="updateImage($event)"
-            ></ion-input>
-          </ion-item>
-          <img *ngIf="!editing" [src]="user?.photoURL" class="custom-image" />
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item *ngIf="editing">
+              <ion-label position="floating">Foto de perfil</ion-label>
+              <br />
+              <ion-input
+                type="file"
+                name="image"
+                (change)="updateImage($event)"
+              ></ion-input>
+            </ion-item>
+            <img *ngIf="!editing" [src]="user?.photoURL" class="custom-image" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
-    <ion-button expand="full" type="submit" (click)="toggleEdit()">
-      {{ editing ? 'Actualizar perfil' : 'Editar perfil' }}
-    </ion-button>
-    <ion-button
-      *ngIf="editing"
-      expand="full"
-      type="button"
-      (click)="cancelEdit()"
-      >Cancelar</ion-button
+      <ion-button expand="full" type="submit" (click)="toggleEdit()">
+        {{ editing ? 'Actualizar perfil' : 'Editar perfil' }}
+      </ion-button>
+      <ion-button
+        *ngIf="editing"
+        expand="full"
+        type="button"
+        (click)="cancelEdit()"
+        >Cancelar</ion-button
+      >
+    </form>
+
+    <p
+      *ngIf="!editing && !pictureTaken && !videoRecorded"
+      class="custom-paragraph"
     >
-  </form>
+      Presiona el botón para mandar un mensaje de emergencia
+    </p>
+    <ion-button
+      *ngIf="!editing && !pictureTaken && !videoRecorded"
+      (click)="emergency()"
+      class="emergency-button"
+    >
+      <ion-icon name="alert-circle-outline" class="emergency-icon"></ion-icon>
+    </ion-button>
+    <p *ngIf="!editing && pictureTaken&& !recording" class="custom-paragraph">
+      Mensaje de emergencia de {{ user?.username }}
+    </p>
+    <p *ngIf="successMessage">{{successMessage}}</p>
 
-  <p
-    *ngIf="!editing && !pictureTaken && !videoRecorded"
-    class="custom-paragraph"
-  >
-    Presiona el botón para mandar un mensaje de emergencia
-  </p>
-  <ion-button
-    *ngIf="!editing && !pictureTaken && !videoRecorded"
-    (click)="emergency()"
-    class="emergency-button"
-  >
-    <ion-icon name="alert-circle-outline" class="emergency-icon"></ion-icon>
-  </ion-button>
-  <p *ngIf="!editing && pictureTaken&& !recording" class="custom-paragraph">
-    Mensaje de emergencia de {{ user?.username }}
-  </p>
-  <p *ngIf="successMessage">{{successMessage}}</p>
+    <p *ngIf="pictureTaken && !recording" class="custom-paragraph">
+      Tu imagen <ion-icon name="image" class="normal-icon"></ion-icon>:
+    </p>
+    <img *ngIf="pictureTaken && !recording" [src]="pictureUrl" />
 
-  <p *ngIf="pictureTaken && !recording">Tu imagen <ion-icon name="image" class="normal-icon"></ion-icon>: </p>
-  <img *ngIf="pictureTaken && !recording" [src]="pictureUrl" />
+    <ion-button
+      *ngIf="pictureTaken && countdownValue === 0 && !videoRecorded && !recording"
+      (click)="startRecording()"
+      >Iniciar grabación</ion-button
+    >
 
-  <ion-button
-    *ngIf="pictureTaken && countdownValue === 0 && !videoRecorded && !recording"
-    (click)="startRecording()"
-    >Iniciar grabación</ion-button
-  >
+    <p *ngIf="countdownValue > 0 && !videoRecorded">
+      El video comenzará en: {{ countdownValue }} segundos
+    </p>
+    <p *ngIf="recordingCountdownValue > 0 && countdownValue === 0 && recording">
+      Quedan {{recordingCountdownValue}} segundos para terminar de grabar
+    </p>
+    <video
+      #videoElement
+      *ngIf="pictureTaken && !videoRecorded"
+      [srcObject]="videoStream"
+      autoplay
+    ></video>
 
-  <p *ngIf="countdownValue > 0 && !videoRecorded">
-    El video comenzará en: {{ countdownValue }} segundos
-  </p>
-  <p *ngIf="recordingCountdownValue > 0 && countdownValue === 0 && recording">
-     Quedan {{recordingCountdownValue}} segundos para terminar de grabar
-  </p>
-  <video
-    #videoElement
-    *ngIf="pictureTaken && !videoRecorded"
-    [srcObject]="videoStream"
-    autoplay
-  ></video>
+    <p *ngIf="videoRecorded && !recording" class="custom-paragraph">
+      Tu video <ion-icon name="videocam" class="normal-icon"></ion-icon> :
+    </p>
+    <video
+      *ngIf="videoRecorded && !recording"
+      #videoPlayback
+      [src]="videoUrl"
+      controls
+    ></video>
 
-  <p *ngIf="videoRecorded && !recording">Tu video <ion-icon name="videocam" class="normal-icon"></ion-icon> :</p>
-  <video
-    *ngIf="videoRecorded && !recording"
-    #videoPlayback
-    [src]="videoUrl"
-    controls
-  ></video>
+    <p *ngIf="videoRecorded && successMessage">{{ successMessage }}</p>
 
-  <p *ngIf="videoRecorded && successMessage">{{ successMessage }}</p>
+    <ion-button
+      *ngIf="videoRecorded && !audioRecorded && !recordingAudio"
+      (click)="toggleAudioRecording()"
+    >
+      Iniciar grabación de audio
+    </ion-button>
 
-  <ion-button
-    *ngIf="videoRecorded && !audioRecorded && !recordingAudio"
-    (click)="toggleAudioRecording()"
-  >
-    Iniciar grabación de audio
-  </ion-button>
+    <!-- Mostrar el ícono de micrófono animado -->
+    <ion-icon
+      *ngIf="recordingAudio && !audioRecorded"
+      name="mic-circle-outline"
+      class="recording-icon"
+    ></ion-icon>
+    <p *ngIf="recordingAudio && !audioRecorded">Grabando audio...</p>
 
-<!-- Mostrar el ícono de micrófono animado -->
-<ion-icon *ngIf="recordingAudio && !audioRecorded" name="mic-circle-outline" class="recording-icon"></ion-icon>
-<p *ngIf="recordingAudio && !audioRecorded">Grabando audio...</p>
+    <p *ngIf="audioRecorded" class="custom-paragraph">Tu audio:</p>
 
-<p *ngIf="audioRecorded">Tu audio:</p>
+    <ion-icon
+      *ngIf="audioRecorded"
+      name="headset"
+      class="recording-icon"
+    ></ion-icon><br>
+    <!-- Mostrar el audio grabado después de la grabación -->
+    <audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
 
-<ion-icon *ngIf="audioRecorded" name="headset" class="recording-icon"></ion-icon>
-<!-- Mostrar el audio grabado después de la grabación -->
-<audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
+<!-- ... (código existente) ... -->
+<ion-button *ngIf="showLocationButton && audioRecorded" (click)="getLocation()" expand="full">
+  Obtener Ubicación
+</ion-button>
 
+<p *ngIf="showLocationLink" class="custom-paragraph">
+  Tu ubicación:
+</p>
+<ion-button *ngIf="showLocationLink" (click)="openLocation()" expand="full">
+  Ver mi Ubicación
+</ion-button>
+
+
+  </div>
 </ion-content>
