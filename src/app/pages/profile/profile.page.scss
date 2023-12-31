@@ -1,0 +1,99 @@
+/* Estilos generales */
+body {
+    font-family: 'Keania One', sans-serif;
+  }
+  
+  /* Estilos para el contenido */
+  ion-content {
+    --ion-background-color: linear-gradient(#0505a0, #2095cf);
+    font-weight: bold;
+    text-shadow: 0 0 50px black;
+    --ion-font-family: 'Keania One', sans-serif;
+  }
+
+  /* Estilos para los títulos */
+  h1 {
+    font-weight: bold;
+    text-shadow: 0 0 50px black;
+    text-align: center;
+  }
+  ion-title {
+    color: white;
+    align-content: center;
+  }  /* Estilos para los elementos de formulario */
+  ion-item {
+    --background: #ffffff;
+    margin-top: 20px;
+    border-radius: 10px;
+    border-color: black;
+    color: rgb(199, 31, 31);
+    border: 3px solid black;
+  }
+  
+  /* Estilos para los botones */
+  ion-button {
+    --background: rgb(199, 31, 31);
+    --border-color: black;
+    --color: #ffffff;
+    --border-radius: 10px;
+    --border-color: black;
+    font-weight: bold;
+  }
+  
+  /* Estilos para el encabezado */
+  .header {
+    margin-top: 100px;
+    margin-bottom: 80px;
+    text-align: center;
+  }
+
+  .errors span {
+    color: red;
+    font-size: small;
+  }
+  
+  
+  /* Estilos para el subtítulo del encabezado */
+  .header .sub-title {
+    color: rgb(199, 31, 31);
+    font-size: 0.9rem;
+  }
+  
+  /* Estilos para el título del encabezado */
+  .header .title {
+    font-size: 2rem;
+  }
+  /* Estilos adicionales para la personalización */
+.custom-content {
+  --ion-background-color: linear-gradient(#0505a0, #2095cf);
+  font-weight: bold;
+  text-shadow: 0 0 50px black;
+}
+
+.custom-paragraph {
+  font-family: 'Keania One', sans-serif;
+  font-weight: bold;
+  text-shadow: 0 0 50px black;
+  color: white;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.custom-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  background-color: transparent;
+}
+.emergency-icon {
+    font-size: 8em;
+    margin-right: 10px;
+}
+.emergency-button {
+  --background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }

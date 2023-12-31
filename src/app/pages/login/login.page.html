@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Devdactic Chat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+
+  <form [formGroup]="credentialForm" *ngIf="credentialForm">
+    <h1>Bienvenido</h1>
+    <ion-item>
+      <ion-input
+        placeholder="Email address"
+        formControlName="email"
+        autofocus="true"
+        clearInput="true"
+      ></ion-input>
+    </ion-item>
+    <div *ngIf="credentialForm.get('email')?.errors?.['required'] ?? false" class="errors">
+      <span>Se requiere un email</span>
+    </div>
+    <div *ngIf="credentialForm.get('email')?.errors?.['email'] ?? false" class="errors">
+      <span>El Email no es válido</span>
+    </div>
+
+
+    <ion-item>
+      <ion-input
+        placeholder="Password"
+        type="password"
+        formControlName="password"
+        clearInput="true"
+      ></ion-input>
+    </ion-item>
+    <div *ngIf="credentialForm.get('password')?.errors?.['required'] ?? false" class="errors">
+      <span>Se requiere una contraseña válida</span>
+    </div>
+    <div *ngIf="credentialForm.get('password')?.errors?.['minlength'] ?? false" class="errors">
+      <span>La contraseña debe tener minimo 6 caracteres</span>
+    </div>
+  </form>
+
+  <ion-fab horizontal="center">
+    <ion-button (click)="signUp()" expand="full">Registrarse</ion-button>
+    <ion-button (click)="signIn()" expand="full" color="secondary">Ingresar</ion-button>
+  </ion-fab>
+
+
+</ion-content>
