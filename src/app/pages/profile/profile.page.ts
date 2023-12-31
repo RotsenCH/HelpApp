@@ -53,40 +53,29 @@ recordingAudioCountdownValue = 3; // Tiempo para iniciar la grabación
   }
 
   async startAudioRecordingCountdown() {
-    this.recordingAudio = true;
-    let countdown = this.recordingAudioCountdownValue;
-
-    const countdownInterval = setInterval(() => {
-      countdown--;
-      if (countdown === 0) {
-        clearInterval(countdownInterval);
-        this.startAudioRecording();
-      } else {
-        this.successMessage = `El audio empezará a grabarse en ${countdown} segundos`;
-        this.changeDetector.detectChanges();
-      }
-    }, 1000);
+    this.recordingAudio = true; // Iniciar la grabación de audio
+    this.audioRecorded = false; // Asegurarse de que el audio no se haya grabado aún
+  
+    this.successMessage = `El audio está siendo grabado...`;
+    this.changeDetector.detectChanges();
+  
+    setTimeout(async () => {
+      await this.startAudioRecording();
+    }, this.recordingAudioCountdownValue * 1000);
   }
-
+  
   async startAudioRecording() {
     const audioData = await this.emergencyService.recordAudio();
     this.audioUrl = audioData.url;
     this.audioRecorded = true;
     this.audioStream = audioData.stream;
-
-    this.successMessage = null;
-    let recordingSeconds = 5; // Tiempo de grabación
-
-    const recordingInterval = setInterval(() => {
-      recordingSeconds--;
-      if (recordingSeconds === 0) {
-        clearInterval(recordingInterval);
-      } else {
-        this.successMessage = `Quedan ${recordingSeconds} segundos para terminar de grabar`;
-        this.changeDetector.detectChanges();
-      }
-    }, 1000);
+  
+    this.successMessage = 'Grabación de audio completada';
+    this.changeDetector.detectChanges();
   }
+  
+  
+  
 
   async toggleAudioRecording() {
     await this.startAudioRecordingCountdown();

@@ -113,6 +113,16 @@
     Iniciar grabación de audio
   </ion-button>
 
+<!-- Mostrar "Grabando audio..." mientras se graba -->
+<p *ngIf="recordingAudio && !audioRecorded">Grabando audio...</p>
 
-  <audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
+<!-- Mostrar el audio grabado después de la grabación -->
+<audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
+
+<!-- Mostrar el ícono de micrófono animado -->
+<ion-icon *ngIf="recordingAudio && !audioRecorded" name="mic-circle-outline" class="recording-icon"></ion-icon>
+<p *ngIf="!recordingAudio && audioRecorded">Tu audio:</p>
+
+<ion-icon *ngIf="!recordingAudio && audioRecorded" name="mic-circle-outline" class="non-recording-icon"></ion-icon>
+
 </ion-content>
