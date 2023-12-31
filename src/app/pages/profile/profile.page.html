@@ -74,7 +74,7 @@
   </p>
   <p *ngIf="successMessage">{{successMessage}}</p>
 
-  <p *ngIf="pictureTaken && !recording">Tu imagen:</p>
+  <p *ngIf="pictureTaken && !recording">Tu imagen <ion-icon name="image" class="normal-icon"></ion-icon>: </p>
   <img *ngIf="pictureTaken && !recording" [src]="pictureUrl" />
 
   <ion-button
@@ -96,7 +96,7 @@
     autoplay
   ></video>
 
-  <p *ngIf="videoRecorded && !recording">Tu video:</p>
+  <p *ngIf="videoRecorded && !recording">Tu video <ion-icon name="videocam" class="normal-icon"></ion-icon> :</p>
   <video
     *ngIf="videoRecorded && !recording"
     #videoPlayback
@@ -113,16 +113,14 @@
     Iniciar grabación de audio
   </ion-button>
 
-<!-- Mostrar "Grabando audio..." mientras se graba -->
-<p *ngIf="recordingAudio && !audioRecorded">Grabando audio...</p>
-
-<!-- Mostrar el audio grabado después de la grabación -->
-<audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
-
 <!-- Mostrar el ícono de micrófono animado -->
 <ion-icon *ngIf="recordingAudio && !audioRecorded" name="mic-circle-outline" class="recording-icon"></ion-icon>
-<p *ngIf="!recordingAudio && audioRecorded">Tu audio:</p>
+<p *ngIf="recordingAudio && !audioRecorded">Grabando audio...</p>
 
-<ion-icon *ngIf="!recordingAudio && audioRecorded" name="mic-circle-outline" class="non-recording-icon"></ion-icon>
+<p *ngIf="audioRecorded">Tu audio:</p>
+
+<ion-icon *ngIf="audioRecorded" name="headset" class="recording-icon"></ion-icon>
+<!-- Mostrar el audio grabado después de la grabación -->
+<audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
 
 </ion-content>

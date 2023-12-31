@@ -72,6 +72,11 @@ recordingAudioCountdownValue = 3; // Tiempo para iniciar la grabación
   
     this.successMessage = 'Grabación de audio completada';
     this.changeDetector.detectChanges();
+      // Detener el micrófono una vez se ha grabado el audio
+  const audioTracks = this.audioStream.getAudioTracks();
+  audioTracks.forEach((track) => {
+    track.stop();
+  });
   }
   
   

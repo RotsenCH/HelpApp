@@ -103,10 +103,8 @@ body {
   font-size: 3rem; /* Tamaño del ícono */
   animation: pulse 1s infinite; /* Animación pulsante */
 }
-
-/* Estilos para el ícono de micrófono cuando no se está grabando */
-.non-recording-icon {
-  font-size: 3rem; /* Tamaño del ícono */
+.normal-icon {
+  animation: pulse 3s infinite; /* Animación pulsante */
 }
 
 @keyframes pulse {
