@@ -132,22 +132,31 @@
       *ngIf="audioRecorded"
       name="headset"
       class="recording-icon"
-    ></ion-icon><br>
+    ></ion-icon
+    ><br />
     <!-- Mostrar el audio grabado después de la grabación -->
     <audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
 
-<!-- ... (código existente) ... -->
-<ion-button *ngIf="showLocationButton && audioRecorded" (click)="getLocation()" expand="full">
-  Obtener Ubicación
-</ion-button>
+    <!-- ... (código existente) ... -->
+    <ion-button
+      *ngIf="showLocationButton && audioRecorded"
+      (click)="getLocation()"
+      expand="full"
+    >
+      Obtener Ubicación
+    </ion-button>
 
-<p *ngIf="showLocationLink" class="custom-paragraph">
-  Tu ubicación:
-</p>
-<ion-button *ngIf="showLocationLink" (click)="openLocation()" expand="full">
-  Ver mi Ubicación
-</ion-button>
+    <p *ngIf="showLocationLink" class="custom-paragraph">Tu ubicación:</p>
+    <ion-button *ngIf="showLocationLink" (click)="openLocation()" expand="full">
+      Ver mi Ubicación
+    </ion-button>
 
-
+    <ion-button
+      *ngIf="pictureTaken && videoRecorded && audioRecorded && showLocationLink"
+      (click)="sendEmergency()"
+      expand="full"
+    >
+      Enviar Emergencia
+    </ion-button>
   </div>
 </ion-content>

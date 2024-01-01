@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable, of } from 'rxjs';
+import { switchMap, first } from 'rxjs/operators';
 import { Camera, CameraResultType } from '@capacitor/camera';
+
 @Injectable({
   providedIn: 'root'
 })
 export class EmergencyService {
 
-  constructor() { }
+  constructor(
+    private afs: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {}
 
   async takePicture(): Promise<string> {
     const image = await Camera.getPhoto({
@@ -69,5 +77,11 @@ export class EmergencyService {
         mediaRecorder.stop();
       }, 5000);
     });
+  }
+  async saveEmergency(emergencyData: any): Promise<void> {
+    const emergencyCollection = this.afs.collection<any>('emergencies');
+    const result = await emergencyCollection.add(emergencyData);
+    console.log(result)
+    // You can get the ID of the newly added emergency with result.id if needed
   }
 }

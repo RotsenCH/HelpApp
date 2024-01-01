@@ -32,16 +32,11 @@ export class ProfilePage implements OnInit {
   locationLink!: string;
   showLocationButton = true;
   showLocationLink = false;
-
-  //
-
   recordingAudio = false;
   audioRecorded = false;
   audioUrl!: string;
   audioStream!: MediaStream;
-  recordingAudioCountdownValue = 3; // Tiempo para iniciar la grabación
-
-  //
+  recordingAudioCountdownValue = 3;
 
   constructor(
     private authService: AuthService,
@@ -71,14 +66,11 @@ export class ProfilePage implements OnInit {
       // Maneja el error aquí, muestra un mensaje al usuario o realiza alguna acción.
     }
     this.changeDetector.detectChanges();
-
   }
-  // ... (código existente) ...
 
   openLocation() {
     window.open(this.locationLink, '_blank'); // Abre el enlace en una nueva pestaña
   }
-
 
   getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
@@ -245,6 +237,23 @@ export class ProfilePage implements OnInit {
       }
     }
   }
+  async sendEmergency() {
+    const emergencyData = {
+      picture: this.pictureUrl,
+      video: this.videoUrl,
+      audio: this.audioUrl,
+      location: this.locationLink,
+      timestamp: new Date().toISOString(),
+      userName: this.user?.username,
+    };
+
+    // Aquí llamarías al servicio para guardar los datos en la base de datos
+    await this.emergencyService.saveEmergency(emergencyData);
+
+    // Restablecer valores a su estado predeterminado
+    this.changeDetector.detectChanges();
+  }
+
 
   logout() {
     this.chatService.signOut();
