@@ -18,9 +18,10 @@ import { Capacitor } from '@capacitor/core';
 import { provideFirestore } from '@angular/fire/firestore';
 import { getFirestore } from 'firebase/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
+import {NewEmergencyAlertComponent} from './new-emergency-alert/new-emergency-alert.component'
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,     NewEmergencyAlertComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -43,5 +44,6 @@ import { AngularFireModule } from '@angular/fire/compat';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}

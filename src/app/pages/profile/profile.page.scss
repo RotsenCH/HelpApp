@@ -89,13 +89,13 @@ body {
 }
 .emergency-icon {
     font-size: 8em;
-    margin-right: 10px;
 }
 .emergency-button {
   --background: red;
   display: flex;
   justify-content: center;
   align-items: center;
+  --border-radius: 50%;
   }
 
   /* Estilos para el ícono de micrófono animado */

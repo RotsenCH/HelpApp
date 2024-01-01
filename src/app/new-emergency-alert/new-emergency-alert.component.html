@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva Emergencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <p>El usuario {{ emergencyData.userName }} ha enviado una nueva emergencia</p>
+  <div *ngIf="emergencyData">
+    <ion-card>
+      <ion-card-content>
+        <p>Fecha y hora: {{ emergencyData.timestamp }}</p>
+        <p>Ubicación: {{ emergencyData.location }}</p>
+        <img *ngIf="emergencyData.picture" [src]="emergencyData.picture" alt="Imagen de la emergencia">
+        <video *ngIf="emergencyData.video" controls>
+          <source [src]="emergencyData.video" type="video/mp4">
+          Tu navegador no admite la etiqueta de video.
+        </video>
+        <audio *ngIf="emergencyData.audio" controls>
+          <source [src]="emergencyData.audio" type="audio/mpeg">
+          Tu navegador no admite la etiqueta de audio.
+        </audio>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
