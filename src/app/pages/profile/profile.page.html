@@ -138,6 +138,8 @@
     <audio *ngIf="audioRecorded" [src]="audioUrl" controls></audio>
 
     <!-- ... (código existente) ... -->
+    <p *ngIf="showLocationButton && audioRecorded">Todo listo, comparte tu ubicación para continuar</p>
+
     <ion-button
       *ngIf="showLocationButton && audioRecorded"
       (click)="getLocation()"

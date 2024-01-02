@@ -4,7 +4,7 @@ import { ChatService } from '../../services/chat.service';
 import { Router } from '@angular/router';
 import { EmergencyService } from '../../services/emergency.service';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -44,6 +44,7 @@ export class ProfilePage implements OnInit {
   };
 
   constructor(
+    private toastController: ToastController,
     private authService: AuthService,
     private chatService: ChatService,
     private router: Router,
@@ -98,7 +99,6 @@ export class ProfilePage implements OnInit {
     }, this.recordingAudioCountdownValue * 1000);
   }
 
-  // Luego, modifica la función startAudioRecording para asignar correctamente los valores:
   async startAudioRecording() {
     try {
       const audioUrl = await this.emergencyService.recordAudio();
@@ -107,14 +107,17 @@ export class ProfilePage implements OnInit {
       this.audioRecorded = true;
       this.successMessage = 'Grabación de audio completada';
       this.changeDetector.detectChanges();
+
+      // Detener el micrófono después de obtener el audio
+      if (this.audioStream) {
+        const tracks = this.audioStream.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
     } catch (error) {
       console.error('Error al iniciar la grabación de audio:', error);
       // Maneja el error aquí
     }
   }
-  
-  
-  
 
   async toggleAudioRecording() {
     await this.startAudioRecordingCountdown();
@@ -128,6 +131,12 @@ export class ProfilePage implements OnInit {
       this.successMessage =
         'Foto tomada con éxito, a continuación se grabará un video de 5 segundos';
       this.changeDetector.detectChanges();
+
+      // Detener la cámara después de tomar la foto
+      if (this.videoStream) {
+        const tracks = this.videoStream.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
     } catch (error) {
       console.error('Error al tomar la foto:', error);
       // Maneja el error aquí
@@ -173,54 +182,62 @@ export class ProfilePage implements OnInit {
   async startRecordingAfterCountdown() {
     this.recording = true;
     this.successMessage = null;
-  
+
     const mediaRecorder = new MediaRecorder(this.videoStream);
     const chunks: any[] = [];
     let recordingSeconds = 5;
-  
+
     mediaRecorder.start();
-  
+
     const storageRefPath = `videos/${Date.now()}.mp4`;
     mediaRecorder.ondataavailable = (event) => {
       chunks.push(event.data);
     };
-  
+
     mediaRecorder.onstop = async (event) => {
       const blob = new Blob(chunks, { type: 'video/mp4' });
       const storageRef = this.emergencyService.getStorageRef(storageRefPath);
-  
+
       try {
         const videoRef = storageRef.put(blob);
         await videoRef;
-        storageRef.getDownloadURL().subscribe((videoUrl: string) => {
-          console.log('URL del video en Storage:', videoUrl);
-          this.videoUrl = videoUrl;
-          this.videoRecorded = true;
-          this.recording = false;
-          this.successMessage = 'Video grabado con éxito';
-          this.changeDetector.detectChanges();
-        }, (error) => {
-          console.error('Error al obtener la URL del video:', error);
-        });
+        storageRef.getDownloadURL().subscribe(
+          (videoUrl: string) => {
+            console.log('URL del video en Storage:', videoUrl);
+            this.videoUrl = videoUrl;
+            this.videoRecorded = true;
+            this.recording = false;
+            this.successMessage = 'Video grabado con éxito';
+            this.changeDetector.detectChanges();
+
+            // Detener la cámara después de la grabación del video
+            const tracks = this.videoStream.getTracks();
+            tracks.forEach((track) => track.stop());
+          },
+          (error) => {
+            console.error('Error al obtener la URL del video:', error);
+          }
+        );
       } catch (error) {
         console.error('Error al subir el video:', error);
       }
     };
-  
+
     const countdownInterval = setInterval(() => {
       recordingSeconds--;
       this.recordingCountdownValue = recordingSeconds;
-  
+
       if (recordingSeconds === 0) {
         clearInterval(countdownInterval);
         mediaRecorder.stop();
       }
     }, 1000);
+    this.changeDetector.detectChanges();
   }
-  
 
   async emergency() {
     await this.takePicture();
+    this.changeDetector.detectChanges();
   }
 
   toggleEdit() {
@@ -231,9 +248,11 @@ export class ProfilePage implements OnInit {
       this.editUser = { ...this.user };
     }
     this.editing = !this.editing;
+    this.changeDetector.detectChanges();
   }
   cancelEdit() {
     this.editing = false;
+    this.changeDetector.detectChanges();
   }
 
   async updateImage(event: any) {
@@ -261,7 +280,9 @@ export class ProfilePage implements OnInit {
         );
       }
     }
+    this.changeDetector.detectChanges();
   }
+
   async sendEmergency() {
     try {
       console.log('Datos antes de enviar la emergencia:', {
@@ -271,8 +292,13 @@ export class ProfilePage implements OnInit {
         locationLink: this.locationLink,
         userName: this.user?.username,
       });
-  
-      if (this.pictureUrl && this.videoUrl && this.audioUrl && this.locationLink) {
+
+      if (
+        this.pictureUrl &&
+        this.videoUrl &&
+        this.audioUrl &&
+        this.locationLink
+      ) {
         const emergencyData = {
           picture: this.pictureUrl,
           video: this.videoUrl,
@@ -281,9 +307,32 @@ export class ProfilePage implements OnInit {
           timestamp: new Date().toISOString(),
           userName: this.user?.username,
         };
-  
+
         await this.emergencyService.saveEmergency(emergencyData);
+
+        // Reiniciar el proceso para enviar otra emergencia
+        this.pictureUrl = '';
+        this.videoUrl = '';
+        this.audioUrl = '';
+        this.locationLink = '';
+        this.pictureTaken = false;
+        this.videoRecorded = false;
+        this.audioRecorded = false;
+        this.showLocationButton = true;
+        this.showLocationLink = false;
+        this.successMessage = null;
+
+        // Restablecer las variables relacionadas con la grabación de audio
+        this.recordingAudio = false; // Esto evita que se muestre el ícono y el mensaje de grabación
+
         this.changeDetector.detectChanges();
+        // Mostrar notificación de éxito
+        const toast = await this.toastController.create({
+          message: 'Emergencia enviada exitosamente',
+          duration: 3000, // Duración de la notificación en milisegundos
+          position: 'bottom', // Posición de la notificación (opcional)
+        });
+        toast.present();
       } else {
         console.error('Faltan datos necesarios para enviar la emergencia');
       }
@@ -291,11 +340,12 @@ export class ProfilePage implements OnInit {
       console.error('Error al enviar la emergencia:', error);
       // Maneja el error aquí
     }
+    this.changeDetector.detectChanges();
   }
-  
 
   logout() {
     this.chatService.signOut();
     this.router.navigateByUrl('/login');
+    this.changeDetector.detectChanges();
   }
 }

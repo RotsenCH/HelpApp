@@ -1,0 +1,65 @@
+.custom-header {
+    --background: linear-gradient(#0505a0, #2095cf);
+    text-shadow: 0 0 50px black;
+  }
+  
+  .custom-title {
+    color: white;
+  }
+
+  .normal-icon{
+    font-size: 2em;
+  }
+  
+  .custom-content {
+    --ion-background-color: linear-gradient(#0505a0, #2095cf);
+    font-weight: bold;
+    text-shadow: 0 0 50px black;
+    border-radius: 10%;
+
+  }
+  
+  .custom-strong {
+    color: white;
+    text-shadow: 0 0 50px black;
+    margin: 2%;
+  }
+  
+  .custom-link {
+    color: rgb(255, 0, 0);
+
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .custom-image {
+    border-radius: 10%;
+    display: block;
+    margin: 0 auto;
+    background-color: transparent;
+  }
+  
+  .custom-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 15px;
+    border-radius: 10%;
+
+  }
+  
+  .custom-audio {
+    display: block;
+    margin-top: 15px;
+  }
+  
+  .custom-card {
+    --background: rgba(48, 50, 192, 0.521);
+    margin-top: 20px;
+    border-radius: 10px;
+    border-color: black;
+    color: white;
+
+    border: 3px solid black;
+  }
+  
