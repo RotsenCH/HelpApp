@@ -40,8 +40,22 @@
 
 ![Captura de pantalla 2024-01-03 143658](https://github.com/RotsenCH/HelpApp/assets/117754291/86010149-832a-4352-af36-0673afcbd128)
 
+![image](https://github.com/RotsenCH/HelpApp/assets/117754291/2e04bd2c-3638-46ef-8779-35c0f0a25a0b)
+
+
 
 ## Guardar datos en firebase 🧩
+
+- Los archivos ultimedia los guardamos a traves de firebase en donde los clasificamos en carpetas.
+- 
+![image](https://github.com/RotsenCH/HelpApp/assets/117754291/5853c458-6104-4eec-a178-32a3a6ca66b1)
+
+![image](https://github.com/RotsenCH/HelpApp/assets/117754291/c88c6d61-3d4e-4f1b-93d3-fc6b0dcf43ae)
+
+![image](https://github.com/RotsenCH/HelpApp/assets/117754291/6587bb13-6298-4aa5-9abe-d8dfcba095c1)
+
+
+
 
 
 
