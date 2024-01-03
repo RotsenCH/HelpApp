@@ -19,9 +19,10 @@ import { provideFirestore } from '@angular/fire/firestore';
 import { getFirestore } from 'firebase/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import {NewEmergencyAlertComponent} from './new-emergency-alert/new-emergency-alert.component'
+import { SplashComponent } from './splash/splash.component';
 
 @NgModule({
-  declarations: [AppComponent,     NewEmergencyAlertComponent],
+  declarations: [AppComponent,     NewEmergencyAlertComponent, SplashComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
