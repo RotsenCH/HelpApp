@@ -54,10 +54,6 @@
 
 ![image](https://github.com/RotsenCH/HelpApp/assets/117754291/6587bb13-6298-4aa5-9abe-d8dfcba095c1)
 
-## Hosting firebase
-[firebase](https://bnch-9456f.web.app/)
-
-
 
 
 ## Temas tratados 🤖
@@ -65,3 +61,11 @@
 - Obtención de coordenadas (latitud-longitud).
 - Guardar datos en Firebase.
 - Guardar archivos multimedia.
+
+
+## Hosting firebase
+[firebase](https://bnch-9456f.web.app/)
+
+
+## APK
+Descarga la aplicación dede [aquí](https://drive.google.com/file/d/1Qi9_sM_VJuY4-0fwW7_wFUqJ2n_loEkU/view?usp=drive_link)
